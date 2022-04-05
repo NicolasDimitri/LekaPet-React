@@ -16,8 +16,8 @@ export default function RowOfTable({ id }) {
             value={item.tamanho}
             onChange={({ target: { value } }) => {
               const copyState = [...state];
-              const item = copyState.find((item) => item.id === id);
-              item.tamanho = value;
+              const itemState = copyState.find((item) => item.id === id);
+              itemState.tamanho = value;
               setState(copyState);
             }}
           >
@@ -27,18 +27,29 @@ export default function RowOfTable({ id }) {
           </select>
         </td>
         <td>
-          <input type="number"
-          value={item.quantidade}
-          onChange={({ target: { value } }) => {
-            const copyState = [...state];
-            const item = copyState.find((item) => item.id === id);
-            item.quantidade = value;
-            setState(copyState);
-          }}
+          <input
+            type="number"
+            value={item.quantidade}
+            onChange={({ target: { value } }) => {
+              const copyState = [...state];
+              const itemState = copyState.find((item) => item.id === id);
+              itemState.quantidade = value;
+              setState(copyState);
+            }}
           />
         </td>
-        <td>R$ {(tabelaDePrecos[conditional].find(e => e.tamanho === item.tamanho).preco).toFixed(2)}</td>
-        <td>R$ {(Number(item.quantidade) * tabelaDePrecos[conditional].find(e => e.tamanho === item.tamanho).preco).toFixed(2)}</td>
+        <td>
+          {`R$ ${tabelaDePrecos[conditional]
+            .find((e) => e.tamanho === item.tamanho)
+            .preco.toFixed(2)}`}
+        </td>
+        <td>
+          {`R$ ${(
+            Number(item.quantidade) *
+            tabelaDePrecos[conditional].find((e) => e.tamanho === item.tamanho)
+              .preco
+          ).toFixed(2)}`}
+        </td>
       </tr>
     </>
   );

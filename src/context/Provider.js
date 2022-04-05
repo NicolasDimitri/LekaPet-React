@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import tabelaDePrecos from '../helpers/tabelaDePrecos';
 import Context from './Context';
 
 export default function Provider({ children }) {
@@ -7,12 +8,18 @@ export default function Provider({ children }) {
       id: 0,
       tamanho: '00',
       quantidade: '1',
+      valoresDasPecas: 0,
     },
   ]);
 
+  const [copyOfState, setCopyOfState] = useState([]);
+
   const [conditional, setConditional] = useState('varejo');
 
+  const [checkBox, setCheckbox] = useState(false);
+
   const setPrice = useCallback(() => {
+    let conditionalLet = 'varejo';
     if (
       state.reduce(
         (previousValue, currentValue) =>
@@ -20,6 +27,7 @@ export default function Provider({ children }) {
         0
       ) >= 30
     ) {
+      conditionalLet = 'atacado30pç';
       setConditional('atacado30pç');
     } else if (
       state.reduce(
@@ -28,15 +36,26 @@ export default function Provider({ children }) {
         0
       ) >= 8
     ) {
+      conditionalLet = 'atacado8pç';
       setConditional('atacado8pç');
     } else {
+      conditionalLet = 'varejo';
       setConditional('varejo');
     }
+    const copyState = [...state];
+    copyState.forEach((item) => {
+      item.valoresDasPecas = (
+        Number(item.quantidade) *
+        tabelaDePrecos[conditionalLet].find((e) => e.tamanho === item.tamanho)
+          .preco
+      ).toFixed(2);
+    });
+    setCopyOfState(copyState);
   }, [state]);
 
   useEffect(() => {
     setPrice();
-  }, [state, setPrice]);
+  }, [setPrice]);
 
   return (
     <Context.Provider
@@ -46,6 +65,9 @@ export default function Provider({ children }) {
         conditional,
         setConditional,
         setPrice,
+        copyOfState,
+        checkBox,
+        setCheckbox,
       }}
     >
       {children}
