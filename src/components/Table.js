@@ -46,15 +46,17 @@ export default function Table() {
       <h1>
         {`valor total: ${
           checkBox
-            ? (copyOfState.reduce(
-                (prev, current) => prev + Number(current.valoresDasPecas),
-                0
-              ) +
-              2 *
+            ? (
                 copyOfState.reduce(
-                  (prev, current) => prev + Number(current.quantidade),
+                  (prev, current) => prev + Number(current.valoresDasPecas),
                   0
-                )).toFixed(2)
+                ) +
+                2 *
+                  copyOfState.reduce(
+                    (prev, current) => prev + Number(current.quantidade),
+                    0
+                  )
+              ).toFixed(2)
             : copyOfState
                 .reduce(
                   (prev, current) => prev + Number(current.valoresDasPecas),
