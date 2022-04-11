@@ -2,18 +2,26 @@ import React, { useContext, useState } from 'react';
 import Context from '../context/Context';
 import tabelaDePrecos from '../helpers/tabelaDePrecos';
 
-export default function RowOfTable({ id }) {
+export default function RowOfTable({ id, tamanho, quantidade }) {
   const { state, setState, conditional } = useContext(Context);
   const [item] = useState(state.find((e) => e.id === id));
   return (
     <>
       <tr>
-        <td>X</td>
+        <td
+          onClick={() => {
+            const copyState = [...state];
+            const newState = copyState.filter((e) => e.id !== id);
+            setState(newState);
+          }}
+        >
+          X
+        </td>
         <td>
           <select
             name="tamanho"
             id="tamanho"
-            value={item.tamanho}
+            value={tamanho}
             onChange={({ target: { value } }) => {
               const copyState = [...state];
               const itemState = copyState.find((item) => item.id === id);
@@ -29,7 +37,7 @@ export default function RowOfTable({ id }) {
         <td>
           <input
             type="number"
-            value={item.quantidade}
+            value={quantidade}
             onChange={({ target: { value } }) => {
               const copyState = [...state];
               const itemState = copyState.find((item) => item.id === id);
