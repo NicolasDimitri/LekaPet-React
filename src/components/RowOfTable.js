@@ -1,10 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import Context from '../context/Context';
 import tabelaDePrecos from '../helpers/tabelaDePrecos';
 
 export default function RowOfTable({ id, tamanho, quantidade }) {
   const { state, setState, conditional } = useContext(Context);
-  const [item] = useState(state.find((e) => e.id === id));
   return (
     <>
       <tr>
@@ -48,13 +47,13 @@ export default function RowOfTable({ id, tamanho, quantidade }) {
         </td>
         <td>
           {`R$ ${tabelaDePrecos[conditional]
-            .find((e) => e.tamanho === item.tamanho)
+            .find((e) => e.tamanho === tamanho)
             .preco.toFixed(2)}`}
         </td>
         <td>
           {`R$ ${(
-            Number(item.quantidade) *
-            tabelaDePrecos[conditional].find((e) => e.tamanho === item.tamanho)
+            Number(quantidade) *
+            tabelaDePrecos[conditional].find((e) => e.tamanho === tamanho)
               .preco
           ).toFixed(2)}`}
         </td>
